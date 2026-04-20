@@ -160,7 +160,13 @@ return(
 <label style={labelStyle}>Camp Preference</label>
 <div style={{display:“flex”,gap:“8px”,marginTop:“6px”}}>{[“Half Day”,“Full Day”,“Either”].map(opt=><Tag key={opt} label={opt} color={color} selected={kid.dayType===opt} onClick={()=>onChange({…kid,dayType:opt})}/>)}</div>
 </div>
-<div><label style={labelStyle}>Available Weeks</label><WeekPicker selected={kid.weeks||[]} onChange={weeks=>onChange({…kid,weeks})} color={color}/></div>
+<div style={{background:`${color}08`,borderRadius:“12px”,padding:“14px”,border:`1px solid ${color}20`}}>
+<label style={{...labelStyle,color:color}}>📅 Available Weeks</label>
+<p style={{margin:“0 0 8px”,fontSize:“12px”,color:”#64748b”,fontFamily:”‘DM Sans’,sans-serif”}}>Select the weeks this child is available for camp</p>
+<WeekPicker selected={kid.weeks||[]} onChange={weeks=>onChange({…kid,weeks})} color={color}/>
+{(kid.weeks||[]).length===0&&<p style={{margin:“8px 0 0”,fontSize:“12px”,color:”#FF6B6B”,fontFamily:”‘DM Sans’,sans-serif”}}>⚠️ Please select at least one week</p>}
+{(kid.weeks||[]).length>0&&<p style={{margin:“8px 0 0”,fontSize:“12px”,color:color,fontFamily:”‘DM Sans’,sans-serif”,fontWeight:600}}>{(kid.weeks||[]).length} week{(kid.weeks||[]).length!==1?“s”:””} selected</p>}
+</div>
 </div>
 );
 }
@@ -457,12 +463,12 @@ return(
 function newKid(i){return{id:Date.now()+i,name:””,age:””,interests:[],dayType:“Either”,weeks:[]};}
 
 export default function CampPuzzle(){
-const [step,setStep]=useState(“results”);
+const [step,setStep]=useState(“setup”);
 const [location,setLocation]=useState(“Huntersville, NC”);
 const [radius,setRadius]=useState(“15”);
 const [kids,setKids]=useState([
-{id:0,name:“Child 1”,age:“6”,interests:[“Sports”,“Swimming”,“Technology”],dayType:“Either”,weeks:[“w2”,“w3”,“w4”,“w5”,“w6”,“w7”,“w8”]},
-{id:1,name:“Child 2”,age:“9”,interests:[“Sports”,“Theater”,“Science”],dayType:“Either”,weeks:[“w2”,“w3”,“w4”,“w5”,“w6”,“w7”,“w8”]},
+{id:0,name:””,age:””,interests:[],dayType:“Either”,weeks:[]},
+{id:1,name:””,age:””,interests:[],dayType:“Either”,weeks:[]},
 ]);
 const [carePrefs,setCarePrefs]=useState({});
 const [selectedDayCamps,setSelectedDayCamps]=useState(new Set(DAY_CAMPS.map(c=>c.id)));
